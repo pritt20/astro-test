@@ -1,5 +1,5 @@
 # Project Overview
-# test..
+# test...
 Building Extract, Transform, and Load (ETL) workloads is a common pattern in Apache Airflow. This template shows an example pattern for defining an ETL workload using DuckDB as the data warehouse of choice.
 
 # Learning Paths
