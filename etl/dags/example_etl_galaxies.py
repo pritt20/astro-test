@@ -1,5 +1,5 @@
 """
-### Galaxies ETL example DAG
+#### Galaxies ETL example DAG
 
 This example demonstrates an ETL pipeline using Airflow.
 The pipeline mocks data extraction for data about galaxies using a modularized
