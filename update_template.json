@@ -202,7 +202,7 @@
     },
     {
       "name": "learning-airflow",
-      "templateVersion": "learning-airflow-12.7.1-1",
+      "templateVersion": "learning-airflow-3.0-1-nightly202503240001-1",
       "runtimeVersion": "3.0-1-nightly202503240001"
     }
   ]
