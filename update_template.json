@@ -1,0 +1,209 @@
+{
+  "templates": [
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.0.0-1",
+      "runtimeVersion": "12.0.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.0.0-1",
+      "runtimeVersion": "12.0.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.0.0-1",
+      "runtimeVersion": "12.0.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.0.0-2",
+      "runtimeVersion": "12.0.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.1.0-2",
+      "runtimeVersion": "12.1.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.1.0-3",
+      "runtimeVersion": "12.1.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.1.0-3",
+      "runtimeVersion": "12.1.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.1.0-3",
+      "runtimeVersion": "12.1.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.1.1-4",
+      "runtimeVersion": "12.1.1"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.1.1-1",
+      "runtimeVersion": "12.1.1"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.1.1-1",
+      "runtimeVersion": "12.1.1"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.1.1-1",
+      "runtimeVersion": "12.1.1"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.2.0-2",
+      "runtimeVersion": "12.2.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.2.0-1",
+      "runtimeVersion": "12.2.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.2.0-1",
+      "runtimeVersion": "12.2.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.2.0-3",
+      "runtimeVersion": "12.2.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.3.0-1",
+      "runtimeVersion": "12.3.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.3.0-3",
+      "runtimeVersion": "12.3.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.3.0-1",
+      "runtimeVersion": "12.3.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.3.0-2",
+      "runtimeVersion": "12.3.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.4.0-1",
+      "runtimeVersion": "12.4.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.4.0-1",
+      "runtimeVersion": "12.4.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.4.0-1",
+      "runtimeVersion": "12.4.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.4.0-1",
+      "runtimeVersion": "12.4.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.5.0-1",
+      "runtimeVersion": "12.5.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.5.0-1",
+      "runtimeVersion": "12.5.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.5.0-1",
+      "runtimeVersion": "12.5.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.5.0-1",
+      "runtimeVersion": "12.5.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.6.0-1",
+      "runtimeVersion": "12.6.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.6.0-1",
+      "runtimeVersion": "12.6.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.6.0-1",
+      "runtimeVersion": "12.6.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.6.0-1",
+      "runtimeVersion": "12.6.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.7.0-1",
+      "runtimeVersion": "12.7.0"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.7.0-1",
+      "runtimeVersion": "12.7.0"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.7.0-1",
+      "runtimeVersion": "12.7.0"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.7.0-1",
+      "runtimeVersion": "12.7.0"
+    },
+    {
+      "name": "generative-ai",
+      "templateVersion": "generative-ai-12.7.1-1",
+      "runtimeVersion": "12.7.1"
+    },
+    {
+      "name": "dbt-on-astro",
+      "templateVersion": "dbt-on-astro-12.7.1-1",
+      "runtimeVersion": "12.7.1"
+    },
+    {
+      "name": "etl",
+      "templateVersion": "etl-12.7.1-1",
+      "runtimeVersion": "12.7.1"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.7.1-1",
+      "runtimeVersion": "12.7.1"
+    },
+    {
+      "name": "learning-airflow",
+      "templateVersion": "learning-airflow-12.7.1-1",
+      "runtimeVersion": "3.0-1-nightly202503240001"
+    }
+  ]
+}
