@@ -1,4 +1,4 @@
-def get_embeddings_one_word(word):
+def get_embeddings_one_word(lm, word):
     """
     Embeds a single word using the SentenceTransformers library.
     Args:
@@ -8,7 +8,7 @@ def get_embeddings_one_word(word):
     """
     from sentence_transformers import SentenceTransformer
 
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+    model = SentenceTransformer(lm)
 
     embeddings = model.encode(word)
     embeddings = embeddings.tolist()

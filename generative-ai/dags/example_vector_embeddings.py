@@ -1,17 +1,13 @@
 """
 ## Compute and compare vector embeddings of words
 
-This DAG demonstrates how to compute vector embeddings of words using 
-the SentenceTransformers library and compare the embeddings of a word of 
+This DAG demonstrates how to compute vector embeddings of words using
+the SentenceTransformers library and compare the embeddings of a word of
 interest to a list of words to find the semantically closest match.
 """
 
-from airflow.decorators import (
-    dag,
-    task,
-)  # This DAG uses the TaskFlow API. See: https://www.astronomer.io/docs/learn/airflow-decorators
-from airflow.models.baseoperator import chain
-from airflow.models.param import Param
+  # This DAG uses the TaskFlow API. See: https://www.astronomer.io/docs/learn/airflow-decorators
+from airflow.sdk import Asset, chain, Param, dag, task
 from pendulum import datetime, duration
 from tabulate import tabulate
 import duckdb
@@ -24,8 +20,8 @@ from include.custom_functions.embedding_func import get_embeddings_one_word
 # use the Airflow task logger to log information to the task logs (or use print())
 t_log = logging.getLogger("airflow.task")
 
-# define variables used in a DAG as environment variables in .env for your whole Airflow instance
-# to standardize your DAGs
+# Define variables used in a DAG as environment variables in .env for your whole Airflow instance
+# to standardize your DAGs.
 _DUCKDB_INSTANCE_NAME = os.getenv("DUCKDB_INSTANCE_NAME", "include/astronomy.db")
 _DUCKDB_TABLE_NAME = os.getenv("DUCKDB_TABLE_NAME", "embeddings_table")
 _WORD_OF_INTEREST_PARAMETER_NAME = os.getenv(
@@ -36,16 +32,20 @@ _LIST_OF_WORDS_PARAMETER_NAME = os.getenv(
     "LIST_OF_WORDS_PARAMETER_NAME", "my_list_of_words"
 )
 _LIST_OF_WORDS_DEFAULT = ["sun", "rocket", "planet", "light", "happiness"]
+_LM = os.getenv("LM", "all-MiniLM-L6-v2")
+_LM_DIMENSIONS = os.getenv("LM_DIMS", "384")
+
+
 # -------------- #
 # DAG Definition #
 # -------------- #
 
 
-# instantiate a DAG with the @dag decorator and set DAG parameters (see: https://www.astronomer.io/docs/learn/airflow-dag-parameters)
+# Instantiate a DAG with the @dag decorator and set DAG parameters 
+# (see: https://www.astronomer.io/docs/learn/airflow-dag-parameters).
 @dag(
-    start_date=datetime(2024, 5, 1),  # date after which the DAG can be scheduled
+    start_date=datetime(2025, 4, 1),  # date after which the DAG can be scheduled
     schedule="@daily",  # see: https://www.astronomer.io/docs/learn/scheduling-in-airflow for options
-    catchup=False,  # see: https://www.astronomer.io/docs/learn/rerunning-dags#catchup
     max_consecutive_failed_dag_runs=5,  # auto-pauses the DAG after 5 consecutive failed runs, experimental
     doc_md=__doc__,  # add DAG Docs in the UI, see https://www.astronomer.io/docs/learn/custom-airflow-ui-docs-tutorial
     default_args={
@@ -68,23 +68,25 @@ _LIST_OF_WORDS_DEFAULT = ["sun", "rocket", "planet", "light", "happiness"]
             title="A list of words to compare to the word of interest.",
         ),
     },
-    # Warning - in-memory DuckDB is not a persistent database between workers. To move this workflow in production, use a 
+    # Warning - in-memory DuckDB is not a persistent database between workers. To move this workflow in production, use a
     # cloud-based database and based on concurrency capabilities adjust the two parameters below.
     max_active_runs=1,  # only allow one concurrent run of this DAG, prevents parallel DuckDB calls
-    concurrency=1, # only allow a single task execution at a time, prevents parallel DuckDB calls
+    is_paused_upon_creation=False, # start running the DAG as soon as its created
 )
 def example_vector_embeddings():  # by default the dag_id is the name of the decorated function
 
     # ---------------- #
     # Task Definitions #
     # ---------------- #
-    # the @task decorator turns any Python function into an Airflow task
-    # any @task decorated function that is called inside the @dag decorated
+    # The @task decorator turns any Python function into an Airflow task.
+    # Any @task-decorated function that is called inside the @dag-decorated
     # function is automatically added to the DAG.
-    # if one exists for your use case you can still use traditional Airflow operators
-    # and mix them with @task decorators. Checkout registry.astronomer.io for available operators
-    # see: https://www.astronomer.io/docs/learn/airflow-decorators for information about @task
-    # see: https://www.astronomer.io/docs/learn/what-is-an-operator for information about traditional operators
+    # 
+    # If one exists for your use case, you can still use traditional Airflow operators
+    # and mix them with @task decorators. Check out registry.astronomer.io for available operators.
+    #
+    # See: https://www.astronomer.io/docs/learn/airflow-decorators for information about the @task decorator.
+    # See: https://www.astronomer.io/docs/learn/what-is-an-operator for information about traditional operators.
 
     @task(retries=2)  # you can override default_args at the task level
     def get_words(
@@ -112,10 +114,11 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
         """
 
         list_of_words_and_embeddings = []
+        lm = _LM
 
         for word in list_of_words:
             word_and_embeddings = get_embeddings_one_word(
-                word
+                lm, word
             )  # using the modularized function in the include folder
             list_of_words_and_embeddings.append(word_and_embeddings)
 
@@ -123,6 +126,7 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
 
     @task
     def create_vector_table(
+        lm_dims: str = _LM_DIMENSIONS,
         duckdb_instance_name: str = _DUCKDB_INSTANCE_NAME,
         table_name: str = _DUCKDB_TABLE_NAME,
     ) -> None:
@@ -141,18 +145,23 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
         cursor.execute("SET hnsw_enable_experimental_persistence = true;")
 
         table_name = "embeddings_table"
-
+        
         cursor.execute(
             f"""
             CREATE OR REPLACE TABLE {table_name} (
                 text STRING,
-                vec FLOAT[384]
+                vec FLOAT[{lm_dims}]
             );
+            """
+        )
 
+        cursor.execute(
+            f"""
             -- Create an HNSW index on the embedding vector
             CREATE INDEX my_hnsw_index ON {table_name} USING HNSW (vec);
             """
         )
+
         cursor.close()
 
     @task
@@ -193,8 +202,9 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
             dict: A dictionary with the word as key and the embeddings as value.
         """
 
+        lm = _LM
         my_word_of_interest = context["params"][_WORD_OF_INTEREST_PARAMETER_NAME]
-        embeddings = get_embeddings_one_word(my_word_of_interest)
+        embeddings = get_embeddings_one_word(lm, my_word_of_interest)
 
         embeddings = embeddings[my_word_of_interest]
 
@@ -202,6 +212,7 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
 
     @task
     def find_closest_word_match(
+        lm_dims: str = _LM_DIMENSIONS,
         duckdb_instance_name: str = _DUCKDB_INSTANCE_NAME,
         table_name: str = _DUCKDB_TABLE_NAME,
         word_of_interest_embedding: dict = None,
@@ -225,7 +236,7 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
         top_3 = cursor.execute(
             f"""
             SELECT text FROM {table_name}
-            ORDER BY array_distance(vec, {vec}::FLOAT[384])
+            ORDER BY array_distance(vec, {vec}::FLOAT[{lm_dims}])
             LIMIT 3;
             """
         )
@@ -238,16 +249,16 @@ def example_vector_embeddings():  # by default the dag_id is the name of the dec
         return top_3
 
     # ------------------------------------ #
-    # Calling tasks + Setting dependencies #
+    # Calling tasks + setting dependencies #
     # ------------------------------------ #
 
-    # each call of a @task decorated function creates one task in the Airflow UI
-    # passing the return value of one @task decorated function to another one
-    # automatically creates a task dependency
+    # Each call of a @task-decorated function creates one task in the Airflow UI.
+    # Passing the return value of one @task-decorated function to another one
+    # automatically creates a task dependency.
     create_embeddings_obj = create_embeddings(list_of_words=get_words())
     embed_word_obj = embed_word()
 
-    # you can set explicit dependencies using the chain function (or bit-shift operators)
+    # You can set explicit dependencies using the chain function (or bit-shift operators).
     # See: https://www.astronomer.io/docs/learn/managing-dependencies
     chain(
         create_vector_table(),
