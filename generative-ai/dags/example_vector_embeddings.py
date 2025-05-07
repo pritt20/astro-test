@@ -1,6 +1,6 @@
 """
 ## Compute and compare vector embeddings of words
-
+## TEST
 This DAG demonstrates how to compute vector embeddings of words using
 the SentenceTransformers library and compare the embeddings of a word of
 interest to a list of words to find the semantically closest match.
