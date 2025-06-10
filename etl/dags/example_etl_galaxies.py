@@ -6,7 +6,7 @@ The pipeline mocks data extraction for data about galaxies using a modularized
 function, filters the data based on the distance from the Milky Way, and loads the
 filtered data into a DuckDB database.
 """
-# TEST GIT-DEPLOY
+# TEST GIT
 from airflow.decorators import (
     dag,
     task,
